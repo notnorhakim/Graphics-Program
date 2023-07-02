@@ -34,7 +34,7 @@ class BulletSystem {
   //check if bullets leave the screen and remove them from the array
   edges(){
       // YOUR CODE HERE (3 lines approx)
-      for (var i=0; i<this.bullets.length; i++){
+      for (var i=this.bullets.length-1; i>=0; i--){
         if (this.bullets[i].y < 0){
           this.bullets.splice(i,1);
         }

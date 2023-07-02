@@ -11,10 +11,13 @@ var Engine = Matter.Engine;
 var Render = Matter.Render;
 var World = Matter.World;
 var Bodies = Matter.Bodies;
+var Body = Matter.Body; 
 
 var engine;
 var box1;
-var ground1, ground2;
+var propeller, ground2;
+var angle= 0;
+var angleSpeed = 0.2;
 var boxes = [];
 ////////////////////////////////////////////////////////////////
 function setup() {
@@ -25,11 +28,12 @@ function setup() {
 
   // create two boxes and a ground
   box1 = Bodies.rectangle(50, 0, 50, 50, {restitution:.8, friction: .5});
-  ground1 = Bodies.rectangle(200, 200, 500, 10, {isStatic: true, angle: Math.PI * 0.06});
   ground2 = Bodies.rectangle(500, 500, 500, 10, {isStatic: true, angle: Math.PI * -0.06});
+  propeller = Bodies.rectangle(width/2, height/2, 300, 15, {isStatic: true, angle:angle});
+
 
   // add all of the bodies to the world
-  World.add(engine.world, [box1, ground1, ground2]);
+  World.add(engine.world, [box1, ground2, propeller]);
 }
 ///////////////////////////////////////////////////////////////
 // WITH HELPER FUNCTIONS
@@ -40,8 +44,12 @@ function draw() {
 
   fill(255);
   drawVertices(box1.vertices);
+  drawVertices(propeller.vertices);
+  Body.setAngle(propeller, angle); // rotate the propeller only 
+  Body.setAngularVelocity(propeller, angleSpeed); // rotate the propeller with a force and speed to push the objects
+  angle = angleSpeed + angle;
 
-  generateObject(width/2, 0);
+  if (random(1) < 0.2) generateObject(width/2, 0);
 
   for (var i = 0; i < boxes.length; i++) {
     drawVertices(boxes[i].vertices);
@@ -57,8 +65,9 @@ function draw() {
   text("objects: " + boxes.length, 20, 30)
 
   fill(128);
-  drawVertices(ground1.vertices);
   drawVertices(ground2.vertices);
+  
+
 
 }
 //////////////////////////////////////////////////////////
@@ -85,3 +94,5 @@ function drawVertices(vertices) {
   }
   endShape(CLOSE);
 }
+
+

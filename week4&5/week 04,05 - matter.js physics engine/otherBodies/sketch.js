@@ -66,7 +66,6 @@ function setup() {
     mouse: mouse,
   };
   var mouseConstraint = MouseConstraint.create(engine, mouseParams);
-  mouseConstraint.mouse.pixelRatio = pixelDensity();
   World.add(engine.world, [mouseConstraint]);
 
 }

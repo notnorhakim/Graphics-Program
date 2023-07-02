@@ -65,35 +65,39 @@ function checkCollisions(spaceship, asteroids){
     //asteroid-2-earth collisions
     //YOUR CODE HERE (2-3 lines approx)
     for (var i=0; i<asteroids.locations.length; i++){
-      if (isInside(earthLoc, earthSize.x, asteroids.locations[i], asteroids.diams[i])){
+      if (isInside(earthLoc, earthSize.y, asteroids.locations[i], asteroids.diams[i])){
         gameOver();
       }
     }
 
     //spaceship-2-earth
     //YOUR CODE HERE (1-2 lines approx)
-    if (isInside(earthLoc, earthSize.x, spaceship.location, spaceship.size)){
+    if (isInside(earthLoc, earthSize.y, spaceship.location, spaceship.size)){
       gameOver();
     }
     
     //spaceship-2-atmosphere
     //YOUR CODE HERE (1-2 lines approx)
-    if (isInside(atmosphereLoc, atmosphereSize.x, spaceship.location, spaceship.size)){
+    if (isInside(atmosphereLoc, atmosphereSize.y, spaceship.location, spaceship.size)){
       spaceship.setNearEarth();
     }
 
     //bullet collisions
     //YOUR CODE HERE (3-4 lines approx)
-    for (var i=0; i<asteroids.locations.length; i++)
+    var bulletSys = spaceship.bulletSys;
+    var bullets = bulletSys.bullets;
+    for (var i=0; i<bullets.length; i++)
     {
-      for (var j=0; j<spaceship.bulletSys.bullets.length; j++)
+      for (var j=0; j<asteroids.locations.length; j++)
       {
-        if (isInside(asteroids.locations[i], asteroids.diams[i], spaceship.bulletSys.bullets[j], spaceship.bulletSys.diam))
+        var asteroidLoc = asteroids.locations[j];
+        var asteroidDiam = asteroids.diams[j];
+        if(isInside(asteroidLoc, asteroidDiam, bullets[i], bulletSys.diam))
         {
-          asteroids.destroy(i);
+          asteroids.destroy(j);
           score += 1;
-          
         }
+        
       }
     }
 }
@@ -102,12 +106,10 @@ function checkCollisions(spaceship, asteroids){
 //helper function checking if there's collision between object A and object B
 function isInside(locA, sizeA, locB, sizeB){
     // YOUR CODE HERE (3-5 lines approx)
-    if (sizeA/2 + sizeB/2 > dist(locA.x, locA.y, locB.x, locB.y)){
-      return true;
-    }
-    else{
-      return false;
-    }
+    var d = dist(locA.x, locA.y, locB.x, locB.y);
+    var maxDist = sizeA/2 + sizeB/2;  
+    if (d < maxDist) return true;
+    else return false;
 }
 
 //////////////////////////////////////////////////

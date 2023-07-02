@@ -154,7 +154,6 @@ class Spaceship {
     this.applyForce(gravity);
     var friction = this.velocity.copy();
     friction.mult(-1);
-    friction.normalize();
     friction.mult(1/30);
     this.applyForce(friction);
 
